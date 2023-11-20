@@ -15,19 +15,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/")
 public class Controller {
     private final JFRExtractorService jfrExtractorService;
-
+    public static final String TEMP_DIR = System.getProperty("java.io.tmpdir") + "/";
     public Controller(JFRExtractorService jfrExtractorService){
         this.jfrExtractorService = jfrExtractorService;
     }
 
     @GetMapping()
-    public ResponseEntity<?> getUsers() throws IOException {
-        ResponseData responseData = jfrExtractorService.extractDataFromJFR("src/main/resources/static/sample-1.jfr");
+    public ResponseEntity<?> getUsers(@RequestParam("file") String  fileName) throws IOException {
+        ResponseData responseData = jfrExtractorService.extractDataFromJFR(TEMP_DIR + fileName);
 //        System.out.println(responseData.toString());
 //        MultiValueMap<String, String> headers = new HttpHeaders();
 //        headers.put(HttpHeaders.ACCEPT, Collections.singletonList(MediaType.APPLICATION_JSON_VALUE);
